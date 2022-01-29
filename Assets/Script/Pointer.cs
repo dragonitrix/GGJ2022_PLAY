@@ -51,6 +51,7 @@ public class Pointer : MonoBehaviour
         {
             if (currentHoverObj != null)
             {
+                Debug.Log(currentHoverObj);
                 var btn = currentHoverObj.GetComponent<SpriteButton>();
                 btn.OnPointerClick(this);
             }
