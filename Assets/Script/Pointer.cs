@@ -14,7 +14,7 @@ public class Pointer : MonoBehaviour
     {
         if (collider.tag == "Button")
         {
-            currentHoverObj = collider.gameObject;
+            currentHoverObj = collider.transform.parent.gameObject;
             var btn = currentHoverObj.GetComponent<SpriteButton>();
             btn.OnPointerEnter(this);
         }
@@ -24,7 +24,7 @@ public class Pointer : MonoBehaviour
     {
         if (collider.tag == "Button")
         {
-            if (currentHoverObj == collider.gameObject)
+            if (currentHoverObj == collider.transform.parent.gameObject)
             {
                 var btn = currentHoverObj.GetComponent<SpriteButton>();
                 btn.OnPointerExit(this);
@@ -51,9 +51,17 @@ public class Pointer : MonoBehaviour
         {
             if (currentHoverObj != null)
             {
-                Debug.Log(currentHoverObj);
                 var btn = currentHoverObj.GetComponent<SpriteButton>();
                 btn.OnPointerClick(this);
+            }
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            if (currentHoverObj != null)
+            {
+                var btn = currentHoverObj.GetComponent<SpriteButton>();
+                btn.OnPointerRelease(this);
             }
         }
 
