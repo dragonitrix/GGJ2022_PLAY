@@ -2,6 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+
+using DigitalRuby.Tween;
+
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -28,9 +34,42 @@ public class GameManager : MonoBehaviour
     }
 
     public static GameManager instance;
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            //DontDestroyOnLoad(this.gameObject); // game only has 1 scene. no need to dontDestroyOnload
+        }
+        else if (instance != this)
+        {
+            Destroy(this);
+        }
+    }
+
+    [Header("Statistics")]
+
+    public float totalPlaytime = 0;
+
+    public int totalClick = 0;
+    public int ButtonClick = 0;
+
+    public float accuracy = 0f;
+
+    [Header("UI")]
+
+    public CanvasGroup endPanel;
+    public Animator endShutter;
+    public TextMeshProUGUI playTimeText;
+    public TextMeshProUGUI accText;
+
+    [Header("pointer")]
 
     public Pointer pointer_Yin;
     public Pointer pointer_Yang;
+
+    [Header("properties")]
+    public bool isGameOver = false;
 
     public int GetPointerCurrentHoverCount()
     {
@@ -73,24 +112,11 @@ public class GameManager : MonoBehaviour
 
     public void SpawnSimpleRipple(Transform transform, Vector3 size, Color color, float duration)
     {
+        if (isGameOver) return;
         var ripple = Instantiate(ripple_Prefabs, transform);
         ripple.transform.position = transform.position;
         ripple.GetComponent<SimpleRipple>().Ripple(size, color, duration);
     }
-
-    private void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(this.gameObject);
-        }
-        else if (instance != this)
-        {
-            Destroy(this);
-        }
-    }
-
 
 
     // Start is called before the first frame update
@@ -101,26 +127,31 @@ public class GameManager : MonoBehaviour
         Cursor.visible = false;
 
         pointer_Yin.LockRotation(30f);
-        pointer_Yang.gameObject.SetActive(false);
+        //pointer_Yang.gameObject.SetActive(false);
 
         SpawnLevel(0);
     }
 
     public void NextLevel()
     {
+        if (isGameOver) return;
+
         if (currentLevelIndex == 0) //first level pass, start the true game.
         {
-            pointer_Yang.gameObject.SetActive(true);
+            //pointer_Yang.gameObject.SetActive(true);
+            pointer_Yang.FullShow();
             pointer_Yin.UnlockRotation();
         }
         //Debug.Log("NextLevel");
+        var delay = currentLevel.DespawnLevel();
         if (currentLevelIndex >= levels_obj.Count - 1)
         {
             Debug.Log("Reach the END");
+            this.isGameOver = true;
+            GameOver();
             return;
         }
         currentLevelIndex++;
-        var delay = currentLevel.DespawnLevel();
         StartCoroutine(SpawnLevelDelayCoroutine(currentLevelIndex, delay));
     }
 
@@ -137,9 +168,55 @@ public class GameManager : MonoBehaviour
         SpawnLevel(index);
     }
 
+    public void GameOver()
+    {
+
+        endShutter.SetTrigger("close");
+
+        playTimeText.text = Mathf.Round(totalPlaytime).ToString() + " sec";
+        accText.text = Mathf.Round(accuracy).ToString() + "%";
+
+
+        System.Action<ITween<float>> tweenUpdate = (t) =>
+        {
+            endPanel.alpha = t.CurrentValue;
+        };
+
+        System.Action<ITween<float>> tweenCompleted = (t) =>
+        {
+            endPanel.interactable = true;
+            endPanel.blocksRaycasts = true;
+            Cursor.visible = true;
+        };
+
+        // completion defaults to null if not passed in
+        gameObject.Tween(null, 0, 1, 5, TweenScaleFunctions.CubicEaseIn, tweenUpdate, tweenCompleted);
+
+    }
+
+
+    public void onPlayAgain()
+    {
+        SceneManager.LoadScene(0);
+    }
+
     // Update is called once per frame
     void Update()
     {
+        if (currentLevelIndex != 0 && !isGameOver)
+        {
+            totalPlaytime += Time.deltaTime;
+        }
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            totalClick++;
+            if (pointer_Yin.currentHoverObj != null || pointer_Yang.currentHoverObj != null)
+            {
+                ButtonClick++;
+            }
+            accuracy = Mathf.Round(((float)ButtonClick / (float)totalClick) * 100);
+        }
 
     }
 }

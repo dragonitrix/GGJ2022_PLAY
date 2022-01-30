@@ -48,6 +48,7 @@ MonoBehaviour:
   buttons: []
   conditions: 
   background: {fileID: 0}
+  revertBackground: {fileID: 0}
   hidePointer: 0
 --- !u!1001 &288849807655218003
 PrefabInstance:
@@ -56,6 +57,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3531939773034695390}
     m_Modifications:
+    - target: {fileID: 1975875249078617043, guid: fd9d27f0c4340ba468e31ec0703e302c, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3041003371763930144, guid: fd9d27f0c4340ba468e31ec0703e302c, type: 3}
       propertyPath: m_Name
       value: Button_Off (1)
@@ -142,6 +147,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3531939773034695390}
     m_Modifications:
+    - target: {fileID: 1975875249078617043, guid: fd9d27f0c4340ba468e31ec0703e302c, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3041003371763930144, guid: fd9d27f0c4340ba468e31ec0703e302c, type: 3}
       propertyPath: m_Name
       value: Button_Off

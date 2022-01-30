@@ -79,10 +79,10 @@ public class Pointer : MonoBehaviour
                 var btn = currentHoverObj.GetComponent<SpriteButton>();
                 btn.OnPointerClick(this);
             }
-            //if (!fullHidden)
-            //{
+            if (GameManager.instance.currentLevelIndex != 0)
+            {
                 GameManager.instance.SpawnSimpleRipple(transform, Vector3.one * 1.5f, GameManager.instance.GetColorValue(pointerColor), 0.25f);
-            //}
+            }
         }
 
         if (Input.GetMouseButtonUp(0))
@@ -214,6 +214,7 @@ public class Pointer : MonoBehaviour
         pointerFill_sr.color = new Color(pointerFill_sr.color.r, pointerFill_sr.color.g, pointerFill_sr.color.b, 1);
 
         var trail_sr = transform.GetChild(0).GetChild(2).GetComponent<TrailRenderer>();
+        if (!trail_sr.enabled) { trail_sr.enabled = true; }
         trail_sr.startWidth = 0.2f;
     }
 

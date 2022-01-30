@@ -11,14 +11,15 @@ public class Level : MonoBehaviour
     public List<bool> conditions = new List<bool>();
 
     public Background background;
+    public RevertBackground revertBackground;
 
     public bool hidePointer = false;
 
     public void CheckCondition()
     {
 
-        Debug.Log("hoverCount " + GameManager.instance.GetPointerCurrentHoverCount());
-        Debug.Log("conditions.Count  " + conditions.Count);
+        //Debug.Log("hoverCount " + GameManager.instance.GetPointerCurrentHoverCount());
+        //Debug.Log("conditions.Count  " + conditions.Count);
 
 
         if (conditions.Count != GameManager.instance.GetPointerCurrentHoverCount())
@@ -63,6 +64,10 @@ public class Level : MonoBehaviour
         {
             background.Spawn();
         }
+        if (revertBackground != null)
+        {
+            revertBackground.Spawn();
+        }
 
         if (hidePointer)
         {
@@ -82,6 +87,10 @@ public class Level : MonoBehaviour
         if (background != null)
         {
             background.Despawn();
+        }
+        if (revertBackground != null)
+        {
+            revertBackground.Despawn();
         }
 
         //if (hidePointer)
