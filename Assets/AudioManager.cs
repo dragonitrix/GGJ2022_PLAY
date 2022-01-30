@@ -8,19 +8,25 @@ public class AudioManager : MonoBehaviour
 
     private void Awake()
     {
-        if (instance == null)
+        //if (instance == null)
+        //{
+        //    instance = this;
+        //    //DontDestroyOnLoad(this.gameObject); // game only has 1 scene. no need to dontDestroyOnload
+        //}
+        //else if (instance != this)
+        //{
+        //    Destroy(this);
+        //}
+        if (instance != this)
         {
-            instance = this;
-            //DontDestroyOnLoad(this.gameObject); // game only has 1 scene. no need to dontDestroyOnload
+            Destroy(instance);
         }
-        else if (instance != this)
-        {
-            Destroy(this);
-        }
+        instance = this;
     }
 
     public List<AudioSource> audioSources = new List<AudioSource>();
 
+    public AudioSource bgmSource;
 
     //[SerializeField]
     //public Dictionary<string, AudioClip> Clips = new Dictionary<string, AudioClip>();
@@ -32,6 +38,11 @@ public class AudioManager : MonoBehaviour
     void Start()
     {
         
+    }
+
+    public void PlayBGM()
+    {
+        bgmSource.Play();
     }
 
     public void PlaySound(string clipname, int channel)

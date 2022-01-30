@@ -36,15 +36,22 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     private void Awake()
     {
-        if (instance == null)
+        //if (instance == null)
+        //{
+        //    instance = this;
+        //    //DontDestroyOnLoad(this.gameObject); // game only has 1 scene. no need to dontDestroyOnload
+        //}
+        //else if (instance != this)
+        //{
+        //    Destroy(this);
+        //}
+        
+        if (instance != this)
         {
-            instance = this;
-            //DontDestroyOnLoad(this.gameObject); // game only has 1 scene. no need to dontDestroyOnload
+            Destroy(instance);
         }
-        else if (instance != this)
-        {
-            Destroy(this);
-        }
+        instance = this;
+
     }
 
     [Header("Statistics")]
@@ -173,7 +180,9 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-
+        AudioManager.instance.PlaySound("Off", 1);
+        AudioManager.instance.PlayBGM();
+        
         endShutter.SetTrigger("close");
 
         playTimeText.text = Mathf.Round(totalPlaytime).ToString() + " sec";
