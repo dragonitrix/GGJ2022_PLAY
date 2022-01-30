@@ -151,6 +151,9 @@ public class GameManager : MonoBehaviour
             GameOver();
             return;
         }
+
+        AudioManager.instance.PlaySound("Pass",1);
+
         currentLevelIndex++;
         StartCoroutine(SpawnLevelDelayCoroutine(currentLevelIndex, delay));
     }
@@ -210,10 +213,17 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
+
+
             totalClick++;
             if (pointer_Yin.currentHoverObj != null || pointer_Yang.currentHoverObj != null)
             {
                 ButtonClick++;
+                AudioManager.instance.PlaySound("ClickBtn");
+            }
+            else
+            {
+                AudioManager.instance.PlaySound("Click");
             }
             accuracy = Mathf.Round(((float)ButtonClick / (float)totalClick) * 100);
         }

@@ -24,6 +24,9 @@ public class RevertBackground : MonoBehaviour
 
     public void Spawn(float duration)
     {
+
+        AudioManager.instance.PlaySound("Revert",2);
+
         //spawn tween 
         //var temp_scale = transform.localScale;
         var temp_scale = Vector3.one * 2.2f;

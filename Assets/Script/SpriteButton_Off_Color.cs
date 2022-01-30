@@ -12,6 +12,7 @@ public class SpriteButton_Off_Color : SpriteButton
         if (color == pointer.pointerColor)
         {
             condition = true;
+            AudioManager.instance.PlaySound("Off",1);
         }
         else
         {

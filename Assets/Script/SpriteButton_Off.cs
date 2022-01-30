@@ -12,6 +12,8 @@ public class SpriteButton_Off : SpriteButton
         if (condition)
         {
             pointer.FullHide();
+
+            AudioManager.instance.PlaySound("Off", 1);
             Despawn();
         }
     }
