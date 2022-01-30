@@ -64,7 +64,7 @@ public class SpriteButton : MonoBehaviour
     public void OnPointerClick(Pointer pointer)
     {
         if (pendingDestroy) return;
-        Debug.Log("OnPointerClick " + pointer.id);
+        //Debug.Log("OnPointerClick " + pointer.id);
 
         System.Action<ITween<Vector3>> tweenUpdate = (t) =>
         {

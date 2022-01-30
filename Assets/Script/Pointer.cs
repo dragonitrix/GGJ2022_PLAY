@@ -6,7 +6,24 @@ using UnityEngine;
 public class Pointer : MonoBehaviour
 {
 
+    public bool lockRotation;
+    public float angle = 0;
+    public void LockRotation(float angle)
+    {
+        lockRotation = true;
+        this.angle = angle;
+
+        transform.up = Vector3.up;
+        transform.rotation = Quaternion.Euler(0, 0, angle);
+
+    }
+    public void UnlockRotation()
+    {
+        lockRotation = false;
+    }
+
     public string id = "Ying";
+    public Color pointerColor = Color.white;
 
     GameObject currentHoverObj = null;
 
@@ -43,9 +60,13 @@ public class Pointer : MonoBehaviour
     void Update()
     {
         UpdatePointerPos();
-        var target = Vector3.zero;
-        transform.up = target - transform.position;
-        
+
+        if (!lockRotation)
+        {
+            var target = Vector3.zero;
+            transform.up = target - transform.position;
+        }
+
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -54,6 +75,7 @@ public class Pointer : MonoBehaviour
                 var btn = currentHoverObj.GetComponent<SpriteButton>();
                 btn.OnPointerClick(this);
             }
+            GameManager.instance.SpawnSimpleRipple(transform, Vector3.one * 1.5f, pointerColor, 0.25f);
         }
 
         if (Input.GetMouseButtonUp(0))

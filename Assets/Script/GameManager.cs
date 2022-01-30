@@ -16,6 +16,15 @@ public class GameManager : MonoBehaviour
     public int currentLevelIndex = 0;
     public Level currentLevel;
 
+    public GameObject ripple_Prefabs;
+
+    public void SpawnSimpleRipple(Transform transform, Vector3 size, Color color, float duration)
+    {
+        var ripple = Instantiate(ripple_Prefabs, transform);
+        ripple.transform.position = transform.position;
+        ripple.GetComponent<SimpleRipple>().Ripple(size, color, duration);
+    }
+
     private void Awake()
     {
         if (instance == null)
@@ -37,12 +46,21 @@ public class GameManager : MonoBehaviour
         //buttons.AddRange(GameObject.FindGameObjectsWithTag("Button"));
         //disable default cursor
         Cursor.visible = false;
+
+        pointer_Yin.GetComponent<Pointer>().LockRotation(30f);
+        pointer_Yang.SetActive(false);
+
         SpawnLevel(0);
     }
 
     public void NextLevel()
     {
-        Debug.Log("NextLevel");
+        if (currentLevelIndex == 0) //first level pass, start the true game.
+        {
+            pointer_Yang.SetActive(true);
+            pointer_Yin.GetComponent<Pointer>().UnlockRotation();
+        }
+        //Debug.Log("NextLevel");
         if (currentLevelIndex >= levels_obj.Count - 1) return;
         currentLevelIndex++;
         var delay = currentLevel.DespawnLevel();
