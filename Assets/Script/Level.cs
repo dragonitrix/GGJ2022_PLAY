@@ -2,17 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using DigitalRuby.Tween;
+
 public class Level : MonoBehaviour
 {
     public List<SpriteButton> buttons = new List<SpriteButton>();
        
     public List<bool> conditions = new List<bool>();
-    
+
+    public Background background;
+
+    public bool hidePointer = false;
 
     public void CheckCondition()
     {
 
-        if (conditions.Count != buttons.Count) return;
+        Debug.Log("hoverCount " + GameManager.instance.GetPointerCurrentHoverCount());
+        Debug.Log("conditions.Count  " + conditions.Count);
+
+
+        if (conditions.Count != GameManager.instance.GetPointerCurrentHoverCount())
+        {
+            return;
+        }
 
         var condition = true;
 
@@ -47,6 +59,16 @@ public class Level : MonoBehaviour
             btn.Spawn(this);
         }
 
+        if (background != null)
+        {
+            background.Spawn();
+        }
+
+        if (hidePointer)
+        {
+            GameManager.instance.HidePointerBorder();
+        }
+
     }
 
     public float DespawnLevel()
@@ -56,6 +78,15 @@ public class Level : MonoBehaviour
         foreach (SpriteButton btn in buttons)
         {
             btn.Despawn(delay);
+        }
+        if (background != null)
+        {
+            background.Despawn();
+        }
+        
+        if (hidePointer)
+        {
+            GameManager.instance.ShowPointerBorder();
         }
 
         Destroy(this.gameObject, delay + 0.1f);

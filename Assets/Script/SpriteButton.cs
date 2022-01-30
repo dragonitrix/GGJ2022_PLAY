@@ -20,7 +20,7 @@ public class SpriteButton : MonoBehaviour
     ITween enterTween = null;
     ITween exitTween = null;
 
-    TextMeshPro text;
+    protected TextMeshPro text;
 
     public void OnPointerOver(Pointer pointer)
     {
@@ -187,15 +187,14 @@ public class SpriteButton : MonoBehaviour
         gameObject.Tween(null, transform.localScale, Vector3.zero, duration, TweenScaleFunctions.CubicEaseIn, tweenUpdate, tweenCompleted);
 
     }
+    public void Despawn()
+    {
+        Despawn(0.25f);
+    }
 
     void kill()
     {
         Destroy(this.gameObject);
-    }
-
-    public void Despawn()
-    {
-        Despawn(0.25f);
     }
 
     private void Awake()

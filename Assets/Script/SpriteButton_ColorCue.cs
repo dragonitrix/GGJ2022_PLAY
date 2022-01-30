@@ -14,8 +14,19 @@ public class SpriteButton_ColorCue : SpriteButton
         }
         else
         {
-            condition = false;
+            //condition = false;
         }
     }
 
+    public override void SetTextColorByCondition(Pointer pointer)
+    {
+        if (condition)
+        {
+            text.color = GameManager.instance.GetColorValue(color);
+        }
+        else
+        {
+            text.color = Color.white; // default
+        }
+    }
 }

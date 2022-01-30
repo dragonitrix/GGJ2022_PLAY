@@ -2,12 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using DigitalRuby.Tween;
+
 [RequireComponent(typeof(Collider))]
 public class Pointer : MonoBehaviour
 {
-
-
-
     public bool lockRotation;
     public float angle = 0;
     public void LockRotation(float angle)
@@ -24,10 +23,10 @@ public class Pointer : MonoBehaviour
         lockRotation = false;
     }
 
-    public string id = "Ying";
+    public string id = "Yin";
     public GameManager.MainColor pointerColor;
 
-    GameObject currentHoverObj = null;
+    public GameObject currentHoverObj = null;
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
@@ -100,4 +99,43 @@ public class Pointer : MonoBehaviour
 
     }
 
+    public void HidePointerBorder()
+    {
+        var pointerBorder_sr = transform.GetChild(0).GetChild(0).GetComponent<SpriteRenderer>(); //hardcodeeee
+
+        var startColor = pointerBorder_sr.color;
+        var endColor = new Color(startColor.r, startColor.g, startColor.b, 0f);
+
+        System.Action<ITween<Color>> tweenUpdate = (t) =>
+        {
+            pointerBorder_sr.color = t.CurrentValue;
+        };
+
+        System.Action<ITween<Color>> tweenCompleted = (t) =>
+        {
+        };
+
+        gameObject.Tween(null, startColor, endColor, 0.25f, TweenScaleFunctions.CubicEaseIn, tweenUpdate, tweenCompleted);
+
+    }
+
+    public void ShowPointerBorder()
+    {
+        var pointerBorder_sr = transform.GetChild(0).GetChild(0).GetComponent<SpriteRenderer>(); //hardcodeeee
+
+        var startColor = pointerBorder_sr.color;
+        var endColor = new Color(startColor.r, startColor.g, startColor.b, 1f);
+
+        System.Action<ITween<Color>> tweenUpdate = (t) =>
+        {
+            pointerBorder_sr.color = t.CurrentValue;
+        };
+
+        System.Action<ITween<Color>> tweenCompleted = (t) =>
+        {
+        };
+
+        gameObject.Tween(null, startColor, endColor, 0.25f, TweenScaleFunctions.CubicEaseIn, tweenUpdate, tweenCompleted);
+
+    }
 }

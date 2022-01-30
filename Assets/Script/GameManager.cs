@@ -8,7 +8,8 @@ public class GameManager : MonoBehaviour
     public enum MainColor
     {
         Orange,
-        Blue
+        Blue,
+        BG
     }
 
     public Color GetColorValue(MainColor mainColor)
@@ -19,6 +20,8 @@ public class GameManager : MonoBehaviour
                 return new Color(255f / 255f, 124f / 255f, 12f / 255f);
             case MainColor.Blue:
                 return new Color(52f / 255f, 156f / 255f, 255f / 255f);
+            case MainColor.BG:
+                return new Color(13f / 255f, 23f / 255f, 42f / 255f);
             default:
                 return Color.white;
         }
@@ -26,8 +29,32 @@ public class GameManager : MonoBehaviour
 
     public static GameManager instance;
 
-    public GameObject pointer_Yin;
-    public GameObject pointer_Yang;
+    public Pointer pointer_Yin;
+    public Pointer pointer_Yang;
+
+    public int GetPointerCurrentHoverCount()
+    {
+        int currentHoverCount = 0;
+        if (pointer_Yin.currentHoverObj != null)
+        {
+            currentHoverCount++;
+        }
+        if (pointer_Yang.currentHoverObj != null)
+        {
+            currentHoverCount++;
+        }
+        return currentHoverCount;
+    }
+    public void HidePointerBorder()
+    {
+        pointer_Yin.HidePointerBorder();
+        pointer_Yang.HidePointerBorder();
+    }
+    public void ShowPointerBorder()
+    {
+        pointer_Yin.ShowPointerBorder();
+        pointer_Yang.ShowPointerBorder();
+    }
 
     public List<GameObject> buttons = new List<GameObject>();
 
@@ -66,8 +93,8 @@ public class GameManager : MonoBehaviour
         //disable default cursor
         Cursor.visible = false;
 
-        pointer_Yin.GetComponent<Pointer>().LockRotation(30f);
-        pointer_Yang.SetActive(false);
+        pointer_Yin.LockRotation(30f);
+        pointer_Yang.gameObject.SetActive(false);
 
         SpawnLevel(0);
     }
@@ -76,11 +103,15 @@ public class GameManager : MonoBehaviour
     {
         if (currentLevelIndex == 0) //first level pass, start the true game.
         {
-            pointer_Yang.SetActive(true);
-            pointer_Yin.GetComponent<Pointer>().UnlockRotation();
+            pointer_Yang.gameObject.SetActive(true);
+            pointer_Yin.UnlockRotation();
         }
         //Debug.Log("NextLevel");
-        if (currentLevelIndex >= levels_obj.Count - 1) return;
+        if (currentLevelIndex >= levels_obj.Count - 1)
+        {
+            Debug.Log("Reach the END");
+            return;
+        }
         currentLevelIndex++;
         var delay = currentLevel.DespawnLevel();
         StartCoroutine(SpawnLevelDelayCoroutine(currentLevelIndex, delay));
