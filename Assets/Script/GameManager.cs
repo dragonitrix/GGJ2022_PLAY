@@ -237,5 +237,11 @@ public class GameManager : MonoBehaviour
             accuracy = Mathf.Round(((float)ButtonClick / (float)totalClick) * 100);
         }
 
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
+
     }
 }
