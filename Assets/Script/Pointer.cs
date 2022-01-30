@@ -6,6 +6,8 @@ using UnityEngine;
 public class Pointer : MonoBehaviour
 {
 
+
+
     public bool lockRotation;
     public float angle = 0;
     public void LockRotation(float angle)
@@ -23,7 +25,7 @@ public class Pointer : MonoBehaviour
     }
 
     public string id = "Ying";
-    public Color pointerColor = Color.white;
+    public GameManager.MainColor pointerColor;
 
     GameObject currentHoverObj = null;
 
@@ -75,7 +77,7 @@ public class Pointer : MonoBehaviour
                 var btn = currentHoverObj.GetComponent<SpriteButton>();
                 btn.OnPointerClick(this);
             }
-            GameManager.instance.SpawnSimpleRipple(transform, Vector3.one * 1.5f, pointerColor, 0.25f);
+            GameManager.instance.SpawnSimpleRipple(transform, Vector3.one * 1.5f, GameManager.instance.GetColorValue(pointerColor), 0.25f);
         }
 
         if (Input.GetMouseButtonUp(0))

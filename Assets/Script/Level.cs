@@ -5,24 +5,35 @@ using UnityEngine;
 public class Level : MonoBehaviour
 {
     public List<SpriteButton> buttons = new List<SpriteButton>();
+       
+    public List<bool> conditions = new List<bool>();
+    
 
     public void CheckCondition()
     {
+
+        if (conditions.Count != buttons.Count) return;
+
         var condition = true;
 
         foreach (SpriteButton btn in buttons)
         {
+            //Debug.Log(btn.condition);
             if (!btn.condition)
             {
                 condition = false;
             }
         }
 
+        //Debug.Log("---");
+
         if (condition)
         {
             //all condition fullfilled
             GameManager.instance.NextLevel();
         }
+
+        conditions.Clear();
 
     }
 
@@ -35,6 +46,7 @@ public class Level : MonoBehaviour
         {
             btn.Spawn(this);
         }
+
     }
 
     public float DespawnLevel()

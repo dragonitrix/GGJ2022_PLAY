@@ -4,6 +4,8 @@ using UnityEngine;
 
 using DigitalRuby.Tween;
 
+using TMPro;
+
 public class SpriteButton : MonoBehaviour
 {
 
@@ -17,6 +19,8 @@ public class SpriteButton : MonoBehaviour
 
     ITween enterTween = null;
     ITween exitTween = null;
+
+    TextMeshPro text;
 
     public void OnPointerOver(Pointer pointer)
     {
@@ -55,15 +59,20 @@ public class SpriteButton : MonoBehaviour
         {
             //Debug.Log("tween completed");
             exitTween = null;
+            isOnClicking = false;
         };
 
         // completion defaults to null if not passed in
         exitTween = gameObject.Tween(null, transform.localScale, Vector3.one, hoverTweenDuration, TweenScaleFunctions.CubicEaseIn, tweenUpdate, tweenCompleted);
 
     }
+
+    bool isOnClicking = false;
+
     public void OnPointerClick(Pointer pointer)
     {
         if (pendingDestroy) return;
+        if (isOnClicking) return;
         //Debug.Log("OnPointerClick " + pointer.id);
 
         System.Action<ITween<Vector3>> tweenUpdate = (t) =>
@@ -83,7 +92,7 @@ public class SpriteButton : MonoBehaviour
     public void OnPointerRelease(Pointer pointer)
     {
         if (pendingDestroy) return;
-        Debug.Log("OnPointerClick " + pointer.id);
+        //Debug.Log("OnPointerClick " + pointer.id);
 
         System.Action<ITween<Vector3>> tweenUpdate = (t) =>
         {
@@ -93,8 +102,8 @@ public class SpriteButton : MonoBehaviour
         System.Action<ITween<Vector3>> tweenCompleted = (t) =>
         {
             //Debug.Log("tween completed");
-            CheckCondition(pointer);
-            parentLevel.CheckCondition();
+            CheckConditionSequence(pointer);
+            isOnClicking = false;
         };
 
         // completion defaults to null if not passed in
@@ -102,9 +111,34 @@ public class SpriteButton : MonoBehaviour
 
     }
 
+    public void CheckConditionSequence(Pointer pointer)
+    {
+        CheckCondition(pointer);
+        SetTextColorByCondition(pointer);
+
+        //parentLevel.PendingCheckCondition();
+        parentLevel.conditions.Add(condition);
+        parentLevel.CheckCondition();
+
+    }
+
+    public virtual void SetTextColorByCondition(Pointer pointer)
+    {
+        if (condition)
+        {
+            text.color = GameManager.instance.GetColorValue(pointer.pointerColor);
+        }
+        else
+        {
+            text.color = Color.white; // default
+        }
+    }
+
     public virtual void CheckCondition(Pointer pointer)
     {
         this.condition = true;
+
+
     }
 
     public void Spawn(Level level, float duration)
@@ -164,12 +198,19 @@ public class SpriteButton : MonoBehaviour
         Despawn(0.25f);
     }
 
+    private void Awake()
+    {
+        text = GetComponentInChildren<TextMeshPro>();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
         //Spawn();
         //var collider = GetComponentInChildren<SpriteButton_Collider>();
         //collider.parent = this;
+
+
     }
 
     // Update is called once per frame

@@ -5,6 +5,25 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public enum MainColor
+    {
+        Orange,
+        Blue
+    }
+
+    public Color GetColorValue(MainColor mainColor)
+    {
+        switch (mainColor)
+        {
+            case MainColor.Orange:
+                return new Color(255f / 255f, 124f / 255f, 12f / 255f);
+            case MainColor.Blue:
+                return new Color(52f / 255f, 156f / 255f, 255f / 255f);
+            default:
+                return Color.white;
+        }
+    }
+
     public static GameManager instance;
 
     public GameObject pointer_Yin;
