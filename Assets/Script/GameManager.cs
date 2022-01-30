@@ -56,6 +56,13 @@ public class GameManager : MonoBehaviour
         pointer_Yang.ShowPointerBorder();
     }
 
+    public void ShowPointers()
+    {
+        pointer_Yin.FullShow();
+        pointer_Yang.FullShow();
+    }
+
+
     public List<GameObject> buttons = new List<GameObject>();
 
     public List<GameObject> levels_obj = new List<GameObject>();

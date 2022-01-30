@@ -9,7 +9,7 @@ using TMPro;
 public class SpriteButton : MonoBehaviour
 {
 
-    bool pendingDestroy = false;
+    protected bool pendingDestroy = false;
 
     float hoverTweenDuration = 0.1f;
 
@@ -94,6 +94,8 @@ public class SpriteButton : MonoBehaviour
         if (pendingDestroy) return;
         //Debug.Log("OnPointerClick " + pointer.id);
 
+        CheckConditionSequence(pointer);
+
         System.Action<ITween<Vector3>> tweenUpdate = (t) =>
         {
             transform.localScale = t.CurrentValue;
@@ -102,7 +104,6 @@ public class SpriteButton : MonoBehaviour
         System.Action<ITween<Vector3>> tweenCompleted = (t) =>
         {
             //Debug.Log("tween completed");
-            CheckConditionSequence(pointer);
             isOnClicking = false;
         };
 
@@ -121,7 +122,13 @@ public class SpriteButton : MonoBehaviour
         parentLevel.CheckCondition();
 
     }
+    
+    public virtual void CheckCondition(Pointer pointer)
+    {
+        this.condition = true;
 
+
+    }
     public virtual void SetTextColorByCondition(Pointer pointer)
     {
         if (condition)
@@ -132,13 +139,6 @@ public class SpriteButton : MonoBehaviour
         {
             text.color = Color.white; // default
         }
-    }
-
-    public virtual void CheckCondition(Pointer pointer)
-    {
-        this.condition = true;
-
-
     }
 
     public void Spawn(Level level, float duration)
@@ -168,7 +168,7 @@ public class SpriteButton : MonoBehaviour
     {
         Spawn(level, 0.25f);
     }
-    public void Despawn(float duration)
+    public virtual void Despawn(float duration)
     {
         pendingDestroy = true;
 
@@ -192,7 +192,7 @@ public class SpriteButton : MonoBehaviour
         Despawn(0.25f);
     }
 
-    void kill()
+    protected void kill()
     {
         Destroy(this.gameObject);
     }

@@ -7,6 +7,9 @@ using DigitalRuby.Tween;
 [RequireComponent(typeof(Collider))]
 public class Pointer : MonoBehaviour
 {
+
+    public bool fullHidden = false;
+
     public bool lockRotation;
     public float angle = 0;
     public void LockRotation(float angle)
@@ -76,7 +79,10 @@ public class Pointer : MonoBehaviour
                 var btn = currentHoverObj.GetComponent<SpriteButton>();
                 btn.OnPointerClick(this);
             }
-            GameManager.instance.SpawnSimpleRipple(transform, Vector3.one * 1.5f, GameManager.instance.GetColorValue(pointerColor), 0.25f);
+            //if (!fullHidden)
+            //{
+                GameManager.instance.SpawnSimpleRipple(transform, Vector3.one * 1.5f, GameManager.instance.GetColorValue(pointerColor), 0.25f);
+            //}
         }
 
         if (Input.GetMouseButtonUp(0))
@@ -115,7 +121,27 @@ public class Pointer : MonoBehaviour
         {
         };
 
-        gameObject.Tween(null, startColor, endColor, 0.25f, TweenScaleFunctions.CubicEaseIn, tweenUpdate, tweenCompleted);
+        gameObject.Tween(null, startColor, endColor, 0.1f, TweenScaleFunctions.CubicEaseIn, tweenUpdate, tweenCompleted);
+
+    }
+
+    public void HidePointerFill()
+    {
+        var pointerFill_sr = transform.GetChild(0).GetChild(1).GetComponent<SpriteRenderer>(); //hardcodeeee
+
+        var startColor = pointerFill_sr.color;
+        var endColor = new Color(startColor.r, startColor.g, startColor.b, 0f);
+
+        System.Action<ITween<Color>> tweenUpdate = (t) =>
+        {
+            pointerFill_sr.color = t.CurrentValue;
+        };
+
+        System.Action<ITween<Color>> tweenCompleted = (t) =>
+        {
+        };
+
+        gameObject.Tween(null, startColor, endColor, 0.1f, TweenScaleFunctions.CubicEaseIn, tweenUpdate, tweenCompleted);
 
     }
 
@@ -135,7 +161,60 @@ public class Pointer : MonoBehaviour
         {
         };
 
-        gameObject.Tween(null, startColor, endColor, 0.25f, TweenScaleFunctions.CubicEaseIn, tweenUpdate, tweenCompleted);
+        gameObject.Tween(null, startColor, endColor, 0.1f, TweenScaleFunctions.CubicEaseIn, tweenUpdate, tweenCompleted);
 
     }
+    public void ShowPointerFill()
+    {
+        var pointerFill_sr = transform.GetChild(0).GetChild(1).GetComponent<SpriteRenderer>(); //hardcodeeee
+
+        var startColor = pointerFill_sr.color;
+        var endColor = new Color(startColor.r, startColor.g, startColor.b, 1f);
+
+        System.Action<ITween<Color>> tweenUpdate = (t) =>
+        {
+            pointerFill_sr.color = t.CurrentValue;
+        };
+
+        System.Action<ITween<Color>> tweenCompleted = (t) =>
+        {
+        };
+
+        gameObject.Tween(null, startColor, endColor, 0.1f, TweenScaleFunctions.CubicEaseIn, tweenUpdate, tweenCompleted);
+
+    }
+
+    public void FullHide()
+    {
+        fullHidden = true;
+        //HidePointerBorder();
+        //HidePointerFill();
+
+        var pointerBorder_sr = transform.GetChild(0).GetChild(0).GetComponent<SpriteRenderer>(); //hardcodeeee
+        pointerBorder_sr.color = new Color(pointerBorder_sr.color.r, pointerBorder_sr.color.g, pointerBorder_sr.color.b, 0);
+
+        var pointerFill_sr = transform.GetChild(0).GetChild(1).GetComponent<SpriteRenderer>(); //hardcodeeee
+        pointerFill_sr.color = new Color(pointerFill_sr.color.r, pointerFill_sr.color.g, pointerFill_sr.color.b, 0);
+
+        var trail_sr = transform.GetChild(0).GetChild(2).GetComponent<TrailRenderer>();
+        trail_sr.startWidth = 0.01f;
+
+    }
+
+    public void FullShow()
+    {
+        fullHidden = false;
+        //ShowPointerBorder();
+        //ShowPointerFill();
+
+        var pointerBorder_sr = transform.GetChild(0).GetChild(0).GetComponent<SpriteRenderer>(); //hardcodeeee
+        pointerBorder_sr.color = new Color(pointerBorder_sr.color.r, pointerBorder_sr.color.g, pointerBorder_sr.color.b, 1);
+
+        var pointerFill_sr = transform.GetChild(0).GetChild(1).GetComponent<SpriteRenderer>(); //hardcodeeee
+        pointerFill_sr.color = new Color(pointerFill_sr.color.r, pointerFill_sr.color.g, pointerFill_sr.color.b, 1);
+
+        var trail_sr = transform.GetChild(0).GetChild(2).GetComponent<TrailRenderer>();
+        trail_sr.startWidth = 0.2f;
+    }
+
 }

@@ -83,11 +83,13 @@ public class Level : MonoBehaviour
         {
             background.Despawn();
         }
-        
-        if (hidePointer)
-        {
-            GameManager.instance.ShowPointerBorder();
-        }
+
+        //if (hidePointer)
+        //{
+        //    GameManager.instance.ShowPointerBorder();
+        //}
+
+        GameManager.instance.ShowPointers();
 
         Destroy(this.gameObject, delay + 0.1f);
 

@@ -164,6 +164,11 @@ MonoBehaviour:
   - {fileID: 2992095652836011763, guid: 0960360f2e3fb7542ba77b6dd1750871, type: 3}
   - {fileID: 2992095652836011763, guid: df2341e228320904fa7ecc9d11b9c3c3, type: 3}
   - {fileID: 2992095652836011763, guid: bb05e62d85bb1f6409524bcc1144d856, type: 3}
+  - {fileID: 2992095652836011763, guid: a0a3162b9e1bfa141880075611607b6f, type: 3}
+  - {fileID: 2992095652836011763, guid: 9269d3a2481a81b41aea76097bfff665, type: 3}
+  - {fileID: 3531939773034695328, guid: 7bbd9718a1a18ac41aaaec0b5b587e77, type: 3}
+  - {fileID: 3531939773034695328, guid: d4d3d051eac39264c938d134893f09ed, type: 3}
+  - {fileID: 3531939773034695328, guid: 6bd955348d023744cbb2bfa6250d51cc, type: 3}
   currentLevelIndex: 0
   currentLevel: {fileID: 0}
   ripple_Prefabs: {fileID: 995317062763646589, guid: b0d5acb66df89444dbc1de10f48fc29b, type: 3}
@@ -738,6 +743,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2693cbf597ba13448ad9f5c6422cb7da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fullHidden: 0
   lockRotation: 0
   angle: 0
   id: Yang
@@ -1310,6 +1316,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 269b4c19fb4dd474db3d579d833f00f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fullHidden: 0
   lockRotation: 0
   angle: 0
   id: Yin
